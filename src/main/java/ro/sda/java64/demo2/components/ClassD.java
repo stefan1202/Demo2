@@ -9,7 +9,7 @@ public class ClassD {
     @Override
     public String toString() {
         return "ClassD{" +
-                "classC=" + classC +
+
                 '}';
     }
 }
