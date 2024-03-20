@@ -5,9 +5,11 @@ import org.springframework.beans.BeansException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("dev")
 public class ClassC implements CommandLineRunner, ApplicationContextAware {
     private  ClassD classD;
     private BondInterface bondInterface;

@@ -1,9 +1,11 @@
 package ro.sda.java64.demo2.components;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("dev")
 public class ClassA implements CommandLineRunner {
 
     private ClassB classB;

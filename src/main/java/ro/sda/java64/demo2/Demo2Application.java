@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Profile;
 import ro.sda.java64.demo2.components.ClassA;
 import ro.sda.java64.demo2.components.ClassB;
 
@@ -18,6 +19,7 @@ public class Demo2Application {
     }
 
     @Bean
+    @Profile("dev")
     public ClassA createClassABean(ClassB bean){
         return new ClassA(bean);
     }

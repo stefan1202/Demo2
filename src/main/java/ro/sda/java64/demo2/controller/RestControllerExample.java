@@ -1,9 +1,13 @@
 package ro.sda.java64.demo2.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import ro.sda.java64.demo2.exceptions.SdaException;
 
 @Controller
 @RequestMapping("/api")
@@ -33,10 +37,25 @@ public class RestControllerExample {
     }
 
     @GetMapping("/hello2")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<String> hello2_get(@RequestBody ResponseObject input){
+    public ResponseEntity<ResponseDto> hello2_get(@Valid @RequestBody ResponseObject input, Errors errors){
+        if (errors.hasErrors()){
+            throw new SdaException(errors.getAllErrors());
+        }
         String value="Hello using request body :" + input.getName() + " / " + input.getLastName();
         System.out.println(value);
-        return ResponseEntity.ok(value);
+        ResponseDto response =  new ResponseDto();
+        response.setLastNameInput(input.getLastName());
+        response.setNameInput(input.getName());
+        if("TUDOR".equals(input.getName())){
+            throw new SdaException();
+        }
+        throw new ArithmeticException("Ana are pere");
+//        return ResponseEntity.ok(response);
+    }
+
+    @ExceptionHandler(value = ArithmeticException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<String> handleArithmeticException(ArithmeticException ex){
+        return ResponseEntity.internalServerError().body(ex.getMessage());
     }
 }
