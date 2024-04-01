@@ -10,9 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ro.sda.java64.demo2.model.Book;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/book")
 public class BooksController {
+
+    private static final List<Book> books = new ArrayList<>();
     @GetMapping("/create")
     public String showForm(Model model){
         Book book = new Book();
@@ -25,9 +30,9 @@ public class BooksController {
         if (errors.hasErrors()){
             return "book_create";
         }
-        form.setPages(99);
-        form.setPublisher("Test");
-        model.addAttribute("book", form);
+        books.add(form);
+
+        model.addAttribute("books", books);
         return "books";
     }
 }

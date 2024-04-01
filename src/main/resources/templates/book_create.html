@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Create</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/5.3.0/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.0/css/bootstrap.css">
     <script src="/webjars/bootstrap/5.3.0/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="/webjars/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -21,6 +21,7 @@
             <div class="form-group col-6">
                 <label for="author">Author</label>
                 <input id="author" type="text" th:field="*{author}"/>
+                <span th:if="${#bools.isTrue(#fields.hasErrors('author'))}" th:errors="*{author}" class="text-danger"></span>
             </div>
             <div class="form-group col-6">
                 <label for="publisher">Publisher</label>
@@ -34,6 +35,9 @@
                 <label for="isbn">ISBN</label>
                 <input id="isbn" type="text" th:field="*{isbn}"/>
             </div>
+                <div >
+                    <p th:if="${#fields.hasErrors('title')} or ${#fields.hasErrors('author')} and 1==1" th:text="${#fields.errors()}" class="text-danger"></p>
+                </div>
             </div>
             <div class="row">
                 <div class="col-2">
