@@ -1,21 +1,24 @@
 package ro.sda.java64.demo2.controller;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import ro.sda.java64.demo2.entities.BookEntity;
 import ro.sda.java64.demo2.model.Book;
+import ro.sda.java64.demo2.repositories.BookRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/book")
 public class BooksController {
+
+    private final BookRepository bookRepository;
 
     private static final List<Book> books = new ArrayList<>();
     @GetMapping("/create")
@@ -30,9 +33,24 @@ public class BooksController {
         if (errors.hasErrors()){
             return "book_create";
         }
-        books.add(form);
+        BookEntity entity= new BookEntity();
+        entity.setAuthor(form.getAuthor());
+        entity.setTitle(form.getTitle());
+        entity.setIsbn(form.getIsbn());
+        entity.setPages(form.getPages());
+        entity.setPublisher(form.getPublisher());
 
-        model.addAttribute("books", books);
+        bookRepository.save(entity);
+
+        model.addAttribute("books", bookRepository.findAll());
+        return "books";
+    }
+
+    @GetMapping("/books")
+    public String listBooksByAuthor(@RequestParam String author, Model model){
+
+
+        model.addAttribute("books", bookRepository.findAllByAuthorStartingWith(author));
         return "books";
     }
 }
