@@ -53,4 +53,17 @@ public class BooksController {
         model.addAttribute("books", bookRepository.findAllByAuthorStartingWith(author));
         return "books";
     }
+
+    @PostMapping("/create/v1")
+    public @ResponseBody BookEntity createBookUsingRestApi(@RequestBody Book form){
+        BookEntity entity= new BookEntity();
+        entity.setAuthor(form.getAuthor());
+        entity.setTitle(form.getTitle());
+        entity.setIsbn(form.getIsbn());
+        entity.setPages(form.getPages());
+        entity.setPublisher(form.getPublisher());
+
+        return bookRepository.save(entity);
+
+    }
 }
