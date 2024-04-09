@@ -2,6 +2,8 @@ package ro.sda.java64.demo2.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -16,6 +18,7 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/book")
+@EnableMethodSecurity
 public class BooksController {
 
     private final BookRepository bookRepository;
@@ -55,6 +58,9 @@ public class BooksController {
     }
 
     @PostMapping("/create/v1")
+//    @Secured("ROLE_admin")
+//    @RolesAllowed("admin")
+    @PreAuthorize("hasRole('admin')")
     public @ResponseBody BookEntity createBookUsingRestApi(@RequestBody Book form){
         BookEntity entity= new BookEntity();
         entity.setAuthor(form.getAuthor());
